@@ -138,22 +138,66 @@ window.editGoal = (id) => {
 };
 
 function init() {
+    // --- TARUH INI DI BAGIAN ATAS SCRIPT (Di bawah deklarasi variabel) ---
+// Set default filter ke bulan sekarang pas aplikasi dibuka
+const monthInput = document.getElementById('month-filter');
+const today = new Date();
+const yyyy = today.getFullYear();
+const mm = String(today.getMonth() + 1).padStart(2, '0'); // Jan = 01
+monthInput.value = `${yyyy}-${mm}`;
+
+// Kalau user ganti bulan, refresh datanya
+monthInput.onchange = () => init();
+
+
+// --- GANTI FUNCTION init() LAMA DENGAN INI ---
+function init() {
     const listEl = document.getElementById('list');
     listEl.innerHTML = '';
-    let total = 0;
-    transactions.sort((a,b) => b.id - a.id).forEach(t => {
-        total += t.amount;
-        listEl.innerHTML += `<li>
-            <div class="info"><strong>${t.text}</strong><small>${t.date} • ${t.category}</small></div>
-            <div class="amount-area">
-                <span style="color:${t.amount < 0 ? '#bc8f8f' : '#6b8e23'}; font-weight:600">Rp ${Math.abs(t.amount).toLocaleString()}</span>
-                <span class="edit-link" onclick="editTransaction(${t.id})">Edit</span>
-            </div>
-            <button class="del-btn-corner" onclick="removeTransaction(${t.id})">×</button>
-        </li>`;
+    
+    // 1. Hitung TOTAL SALDO (Global / Semua Waktu)
+    // Saldo asli dompet ga boleh berubah cuma gara-gara filter bulan
+    let globalTotal = transactions.reduce((acc, t) => acc + t.amount, 0);
+    document.getElementById('balance').innerText = `Rp ${globalTotal.toLocaleString('id-ID')}`;
+
+    // 2. Ambil nilai bulan yang dipilih user
+    const selectedMonth = monthInput.value; // Format: "2023-10"
+
+    // 3. Filter Transaksi sesuai bulan & Sortir berdasarkan TANGGAL (Newest First)
+    let filteredTransactions = transactions.filter(t => t.date.startsWith(selectedMonth));
+    
+    filteredTransactions.sort((a, b) => {
+        // Bandingkan tanggal dulu
+        const dateA = new Date(a.date);
+        const dateB = new Date(b.date);
+        return dateB - dateA; 
+        // Kalau tanggal sama, baru urutkan berdasarkan ID (biar input terakhir tetep di atas)
     });
-    document.getElementById('balance').innerText = `Rp ${total.toLocaleString()}`;
-    renderGoals(); renderBudgets();
+
+    // 4. Render ke Layar
+    if (filteredTransactions.length === 0) {
+        listEl.innerHTML = '<li style="justify-content:center; color:#aaa; font-size:12px;">Belum ada transaksi bulan ini</li>';
+    } else {
+        filteredTransactions.forEach(t => {
+            listEl.innerHTML += `<li>
+                <div class="info">
+                    <strong>${t.text}</strong>
+                    <small>${t.date} • ${t.category}</small>
+                </div>
+                <div class="amount-area">
+                    <span style="color:${t.amount < 0 ? '#e74c3c' : '#2ecc71'}; font-weight:700">
+                        Rp ${Math.abs(t.amount).toLocaleString('id-ID')}
+                    </span>
+                    <span class="edit-link" onclick="editTransaction(${t.id})">Edit</span>
+                </div>
+                <button class="del-btn-corner" onclick="removeTransaction(${t.id})">×</button>
+            </li>`;
+        });
+    }
+
+    renderGoals(); 
+    renderBudgets();
+}
 }
 
 function removeTransaction(id) { if(confirm('Hapus?')) { transactions = transactions.filter(t => t.id !== id); updateLS(); init(); } }
