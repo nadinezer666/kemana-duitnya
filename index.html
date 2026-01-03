@@ -16,14 +16,19 @@
             <button class="tab-btn" onclick="openTab(event, 'tab-budget')">Budget</button>
         </div>
 
-        <div id="tab-transaksi" class="tab-content active">
-            <div class="balance-container">
-                <h4>Total Saldo</h4>
-                <h1 id="balance">Rp 0</h1>
-            </div>
-            <ul id="list" class="list"></ul>
-        </div>
+       <div id="tab-transaksi" class="tab-content active">
+    <div class="balance-container">
+        <h4>Total Saldo Dompet</h4>
+        <h1 id="balance">Rp 0</h1>
+    </div>
 
+    <div class="filter-area">
+        <label>Periode:</label>
+        <input type="month" id="month-filter">
+    </div>
+
+    <ul id="list" class="list"></ul>
+</div>
         <div id="tab-tabungan" class="tab-content">
             <h2 style="text-align: center; font-size: 16px;">Target Nabung</h2>
             <div id="goals-list"></div>
