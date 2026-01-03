@@ -106,3 +106,30 @@ body {
 .card { background: #fff; border: 1px solid #eee; border-radius: 18px; padding: 18px; margin-bottom: 15px; position: relative; box-shadow: 0 4px 10px rgba(0,0,0,0.02); }
 .progress-bar { background: #f0f0f0; height: 10px; border-radius: 5px; overflow: hidden; margin: 12px 0; }
 .progress-fill { height: 100%; transition: width 0.5s; border-radius: 5px;
+
+                /* Style buat Filter Bulan */
+.filter-area {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #fff;
+    padding: 10px 15px;
+    border-radius: 12px;
+    border: 1px solid #eee;
+    margin-bottom: 10px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #555;
+}
+
+.filter-area input[type="month"] {
+    margin: 0;
+    width: auto;
+    border: none;
+    background: transparent;
+    font-weight: 700;
+    color: #2c3e50;
+    text-align: right;
+    cursor: pointer;
+    font-family: inherit;
+}
