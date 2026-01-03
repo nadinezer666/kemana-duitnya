@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finance Pro: Master Edition</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <button id="download-report" class="btn-download">📂 Download Laporan (.txt)</button>
+
+        <div class="tab-nav">
+            <button class="tab-btn active" onclick="openTab(event, 'tab-transaksi')">Transaksi</button>
+            <button class="tab-btn" onclick="openTab(event, 'tab-tabungan')">Nabung</button>
+            <button class="tab-btn" onclick="openTab(event, 'tab-budget')">Budget</button>
+        </div>
+
+        <div id="tab-transaksi" class="tab-content active">
+            <div class="balance-container">
+                <h4>Total Saldo</h4>
+                <h1 id="balance">Rp 0</h1>
+            </div>
+            <ul id="list" class="list"></ul>
+        </div>
+
+        <div id="tab-tabungan" class="tab-content">
+            <h2 style="text-align: center; font-size: 16px;">Target Nabung</h2>
+            <div id="goals-list"></div>
+        </div>
+
+        <div id="tab-budget" class="tab-content">
+            <h2 style="text-align: center; font-size: 16px;">Limit Bulanan</h2>
+            <div id="budget-list"></div>
+        </div>
+
+        <button id="open-modal-btn" class="fab-btn">+</button>
+
+        <div id="modal-overlay" class="modal-overlay">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3 id="modal-title">Tambah Data</h3>
+                    <button id="close-modal-btn">&times;</button>
+                </div>
+                
+                <form id="form-transaksi" class="modal-form">
+                    <input type="hidden" id="edit-id-trans" value="">
+                    <input type="text" id="text" placeholder="Keterangan..." required />
+                    <input type="text" inputmode="numeric" id="amount" class="format-rupiah" placeholder="Jumlah (Rp)..." required />
+                    <input type="date" id="date" required />
+                    <div class="category-box">
+                        <select id="category-select"></select>
+                        <button type="button" id="add-cat-btn" class="mini-btn">+</button>
+                    </div>
+                    <select id="type"><option value="plus">Masuk (+)</option><option value="minus" selected>Keluar (-)</option></select>
+                    <button type="submit" class="btn">Simpan Transaksi</button>
+                </form>
+
+                <form id="form-tabungan" class="modal-form" style="display:none;">
+                    <input type="hidden" id="edit-id-goal" value="">
+                    <input type="text" id="goal-name" placeholder="Nama Target..." required />
+                    <input type="text" inputmode="numeric" id="amount" class="format-rupiah" placeholder="Jumlah (Rp)..." required />
+                    <input type="text" id="goal-current" class="format-rupiah" placeholder="Awal Rp" required />
+                    <button type="submit" class="btn">Simpan Target</button>
+                </form>
+
+                <form id="form-budget" class="modal-form" style="display:none;">
+                    <select id="budget-category-select"></select>
+                    <input type="text" inputmode="numeric" id="amount" class="format-rupiah" placeholder="Jumlah (Rp)..." required />
+                    <button type="submit" class="btn">Set Budget</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
